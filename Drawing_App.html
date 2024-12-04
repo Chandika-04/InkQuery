@@ -149,13 +149,13 @@
     });
 
     saveButton.addEventListener('click', () => {
-      // Display strokes in a custom horizontal format
+      // Display strokes in a custom horizontal format without labels
       const formattedStrokes = strokes.map(stroke => {
-        return `{ x: [${stroke.x.join(", ")}], y: [${stroke.y.join(", ")}] }`;
+        return `[${stroke.x.join(", ")}], [${stroke.y.join(", ")}]`;
       }).join(", ");
       outputDiv.textContent = `[ ${formattedStrokes} ]`;
-      window.location.href = "results.html";
     });
+    
 
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
