@@ -112,7 +112,7 @@ function fetchData(word, langType = 'English intermediate') {
    
 }
 
-export default function wm_getDef(word, langType = 'English intermediate') {
+export function wm_getDef(word, langType = 'English intermediate') {
     return fetchData(word, langType)
     .then(data => {
         if( langType == "Japanese" || 
@@ -139,6 +139,43 @@ export default function wm_getDef(word, langType = 'English intermediate') {
     .catch(error => console.error(error));
 }
 
+export function fetchPicture(word) {
+    const url = `https://pixabay.com/api/?key=47380368-f08bf6fd37b056b31201b5932&q=${word}&image_type=photo`
+
+    return fetch(url)
+    .then(response => {
+        if (!response.ok) {
+            console.error("Response not ok");
+            throw new Error(response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.hits && data.hits.length > 0) {
+            const imageURL = data.hits[0].largeImageURL;
+            return imageURL
+            // return fetch(imageURL)
+            //     .then(imageResponse => {
+            //         if (!imageResponse.ok) {
+            //             console.error("Failed to fetch image");
+            //             throw new Error(imageResponse.status);
+            //         }
+            //         return imageResponse.blob();
+            //     });
+        }
+        else {
+            console.error("No image found for word");
+            throw new Error("No image found for word")
+        }
+    })
+    .catch(error => {
+        console.error("Error fetching from Pixabay: ", error);
+        throw error;
+    });
+}
+
+// let test = await fetchPicture("car");
+// console.log(test.hits[0].largeImageURL);
 
 // fetch(url)
 //     .then(response => {
